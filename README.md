@@ -1,6 +1,5 @@
 ## RUN:
 
---dapr run --app-id routing --app-port 5000 dotnet run
 dapr run --log-level debug --app-id routing --components-path .\components\ --app-port 5000 dotnet run
 
 ## REST:
@@ -13,10 +12,8 @@ curl -X GET http://127.0.0.1:5000/17 -H "Content-Type: application/json"
 
 ## PUB/SUB
 
-dapr publish -t withdraw -p '{\"id\": \"17\", \"amount\": 15 }'
 dapr publish --pubsub messagebus --publish-app-id routing  -t withdraw -d '{\"id\": \"17\", \"amount\": 15 }'
 
---dapr publish -t deposit -p '{\"id\": \"17\", \"amount\": 15 }'
 dapr publish --pubsub messagebus --publish-app-id routing  -t deposit -d '{\"id\": \"17\", \"amount\": 15 }'
 
 curl -X GET http://127.0.0.1:5000/17 -H "Content-Type: application/json"
