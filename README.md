@@ -13,9 +13,12 @@ curl -X GET http://127.0.0.1:5000/17 -H "Content-Type: application/json"
 ## PUB/SUB
 
 dapr publish --pubsub messagebus --publish-app-id routing  -t withdraw -d '{\"id\": \"17\", \"amount\": 15 }'
+
 dapr publish --pubsub messagebus --publish-app-id routing  -t withdraw -f .\data.json
 
 dapr publish --pubsub messagebus --publish-app-id routing  -t deposit -d '{\"id\": \"17\", \"amount\": 15 }'
+
 dapr publish --pubsub messagebus --publish-app-id routing  -t deposit -f .\data.json
+
 
 curl -X GET http://127.0.0.1:5000/17 -H "Content-Type: application/json"
