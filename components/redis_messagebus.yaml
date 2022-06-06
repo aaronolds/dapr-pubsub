@@ -1,11 +1,33 @@
+# apiVersion: dapr.io/v1alpha1
+# kind: Component
+# metadata:
+#   name: messagebus
+# spec:
+#   type: pubsub.redis
+#   metadata:
+#   - name: redisHost
+#     value: localhost:6379
+#   - name: redisPassword
+#     value: ""
+---
 apiVersion: dapr.io/v1alpha1
 kind: Component
 metadata:
   name: messagebus
+  namespace: default
 spec:
-  type: pubsub.redis
+  type: pubsub.kafka
+  version: v1
   metadata:
-  - name: redisHost
-    value: localhost:6379
-  - name: redisPassword
-    value: ""
+  - name: brokers # Required. Kafka broker connection setting
+    value: "localhost:9092" 
+  - name: consumerGroup # Optional. Used for input bindings.
+    value: "pub-sub-group1"
+  - name: clientID # Optional. Used as client tracing ID by Kafka brokers.
+    value: "pub-sub"
+  - name: authType # Required.
+    value: "none"
+  - name: consumeRetryInterval # Optional.
+    value: 200ms
+  - name: disableTls
+    value: "true"

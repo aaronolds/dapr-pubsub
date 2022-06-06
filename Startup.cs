@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace DaprIntro
 {
@@ -71,8 +72,10 @@ namespace DaprIntro
                 await JsonSerializer.SerializeAsync(context.Response.Body, account, serializerOptions);
             }
 
-            async Task Deposit(HttpContext context)
+            async Task Deposit(HttpContext context, ILogger<Startup> logger)
             {
+
+                logger.LogDebug("Enter deposit");
                 var client = context.RequestServices.GetRequiredService<DaprClient>();
 
                 var transaction = await JsonSerializer.DeserializeAsync<Transaction>(context.Request.Body, serializerOptions);
@@ -95,8 +98,9 @@ namespace DaprIntro
                 await JsonSerializer.SerializeAsync(context.Response.Body, account, serializerOptions);
             }
 
-            async Task Withdraw(HttpContext context)
+            async Task Withdraw(HttpContext context, ILogger<Startup> logger)
             {
+                logger.LogDebug("Enter withdraw");
                 var client = context.RequestServices.GetRequiredService<DaprClient>();
 
                 var transaction = await JsonSerializer.DeserializeAsync<Transaction>(context.Request.Body, serializerOptions);
